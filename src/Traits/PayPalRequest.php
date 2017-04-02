@@ -322,6 +322,8 @@ trait PayPalRequest
      */
     private function createRequestPayload($method)
     {
+        $this->options = is_array($this->options) ? $this->options : [];
+        
         $config = array_merge([
             'USER'      => $this->config['username'],
             'PWD'       => $this->config['password'],
@@ -345,6 +347,8 @@ trait PayPalRequest
      */
     private function makeHttpRequest()
     {
+        $this->client = $this->client instanceof HttpClient ? $this->client : $this->setClient();
+
         try {
             return $this->client->post($this->apiUrl, [
                 $this->httpBodyParam => $this->post->toArray(),
